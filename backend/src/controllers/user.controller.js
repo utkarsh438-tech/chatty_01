@@ -1,4 +1,6 @@
 import User from "../models/User.js";
+import FriendRequest from "../models/FriendRequest.js";
+
 export async function getRecommendedUsers(req, res) {
     try {
       const currentUserId = req.user.id;
@@ -135,7 +137,7 @@ export async function getRecommendedUsers(req, res) {
       const outgoingRequests = await FriendRequest.find({
         sender: req.user.id,
         status: "pending",
-      }).populate("recipient", "fullName profilePic nativeLanguage learningLanguage");
+      }).populate("recipient", "fullName profilePic");
   
       res.status(200).json(outgoingRequests);
     } catch (error) {
