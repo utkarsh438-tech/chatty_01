@@ -9,27 +9,25 @@ import Signup from './Components/Signup.jsx'
 import Onboard from './Components/Onboard.jsx'
 import Notification from './Components/Notification.jsx'
 import Callpage from './Components/Callpage.jsx'
-import PageLoader from './functionality/PageLoader.jsx'
+ import PageLoader from './functionality/PageLoader.jsx'
 
 import toast, { Toaster } from 'react-hot-toast';
 import { axiosInstance } from './lib/axios.js';
  import { useQuery } from '@tanstack/react-query'
  import { Navigate } from 'react-router';
+import useAuthUser from './hooks/useAuthUser.js'
 const App = () => {
 
-const {data: authData,isLoading,error}=useQuery({
-  queryKey:["authUser"],
-  queryFn: async()=>{
-    const res= await axiosInstance.get("/auth/me");
-    return  res.data;
-  },
-  retry: false ,
-});
- 
+// const {data: authData,isLoading,error}=useQuery({
+//   queryKey:["authUser"],
+//   queryFn: async()=>{
+//     const res= await axiosInstance.get("/auth/me");
+//     return  res.data;
+//   },
+//   retry: false ,
+// });
+const { isLoading, authUser } = useAuthUser();
 
-
-
-const authUser=authData?.user
 
 if(isLoading) return <PageLoader/>
 
