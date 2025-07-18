@@ -6,11 +6,8 @@ import cors from "cors";
 
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
-<<<<<<< HEAD
 import chatRoutes from "./routes/chat.route.js";
 
-=======
->>>>>>> 7e38e2c6ce0315ab7f20bc64695371261ff2db55
 
 dotenv.config();
 
@@ -20,27 +17,17 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-<<<<<<< HEAD
 app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true, // allow frontend to send cookies
   })
 );
-=======
-app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
-  credentials: true
-}));
->>>>>>> 7e38e2c6ce0315ab7f20bc64695371261ff2db55
 
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-<<<<<<< HEAD
 app.use("/api/chat", chatRoutes);
-=======
->>>>>>> 7e38e2c6ce0315ab7f20bc64695371261ff2db55
 // Health check route
 app.get("/", (req, res) => {
   res.json({ message: "Backend server is running!" });
@@ -56,7 +43,6 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-<<<<<<< HEAD
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
@@ -69,21 +55,3 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   connectDB();
 });
-=======
-
-// Start server
-const startServer = async () => {
-  try {
-    await connectDB();
-    app.listen(PORT, () => {
-      console.log(`Server started on port ${PORT}`);
-    });
-  } catch (error) {
-    console.error("Failed to start server:", error);
-    process.exit(1);
-  }
-};
-
-startServer();
- 
->>>>>>> 7e38e2c6ce0315ab7f20bc64695371261ff2db55
