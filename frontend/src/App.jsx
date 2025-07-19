@@ -27,7 +27,8 @@ const App = () => {
 //   retry: false ,
 // });
 const { isLoading, authUser } = useAuthUser();
-
+const isAuthenticated = Boolean(authUser);
+const isOnboarded = authUser?.isOnboarded;
 
 if(isLoading) return <PageLoader/>
 
@@ -35,10 +36,44 @@ if(isLoading) return <PageLoader/>
     <div data-theme="coffee">
       {/* <button onClick={()=>toast.success("hello world")}>creating toast</button> */}
       <Routes>
-        <Route path="/" element={authUser ? <Homepage />:<Navigate to ="/login"/>} />
-        <Route path="/signup" element={!authUser?<Signup />:<Navigate to="/" />} />
-        <Route path="/login" element={!authUser?<Loginpage />:<Navigate to="/" />} />
-        <Route path="/onboard" element={authUser ?<Onboard />:<Navigate to ="/login"/>} />
+      <Route
+          path="/"
+          element={
+            isAuthenticated && isOnboarded ? (
+               
+                <Homepage/>
+              
+            ) : (
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+            )
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            !isAuthenticated ? <Signup /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            !isAuthenticated ? <Loginpage /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />
+          }
+        />
+        <Route
+          path="/onboarding"
+          element={
+            isAuthenticated ? (
+              !isOnboarded ? (
+                <Onboard />
+              ) : (
+                <Navigate to="/" />
+              )
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
         <Route path="/notification" element={authUser ?<Notification />:<Navigate to ="/login"/>} />
         <Route path="/callpage" element={authUser ?<Callpage />:<Navigate to ="/login"/>} />
         <Route path="/chat" element={authUser ?<Chat />:<Navigate to ="/login"/>} />
