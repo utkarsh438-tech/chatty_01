@@ -10,11 +10,13 @@ import Onboard from './Components/Onboard.jsx'
 import Notification from './Components/Notification.jsx'
 import Callpage from './Components/Callpage.jsx'
  import PageLoader from './functionality/PageLoader.jsx'
+ import Layout from './functionality/Layout.jsx'
 
 import toast, { Toaster } from 'react-hot-toast';
 import { axiosInstance } from './lib/axios.js';
  import { useQuery } from '@tanstack/react-query'
  import { Navigate } from 'react-router';
+ import { useThemeStore } from './store/useThemeStore.js'
 import useAuthUser from './hooks/useAuthUser.js'
 const App = () => {
 
@@ -30,19 +32,21 @@ const { isLoading, authUser } = useAuthUser();
 const isAuthenticated = Boolean(authUser);
 const isOnboarded = authUser?.isOnboarded;
 
+ const { theme } = useThemeStore();
+ 
 if(isLoading) return <PageLoader/>
 
   return (
-    <div data-theme="coffee">
+    <div data-theme={theme}>
       {/* <button onClick={()=>toast.success("hello world")}>creating toast</button> */}
       <Routes>
       <Route
           path="/"
           element={
             isAuthenticated && isOnboarded ? (
-               
+               <Layout showSidebar={true}>
                 <Homepage/>
-              
+                </Layout>
             ) : (
               <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
             )
